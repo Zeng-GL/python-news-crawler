@@ -51,12 +51,18 @@ class db_obj:
         self.db_connect.close()
 
 
-            
-    def query(self,keyword):
+    def query_all(self):
         with self.db_connect.cursor() as cursor:
-            sql_query_part = """
-                SELECT * FROM Member WHERE Name='John'
+            sql_query_all = """
+                SELECT * from Linenews
             """
+            cursor.execute(sql_query_all)
+            self.db_connect.commit()
+        self.db_connect.close()
+            
+    def query_part(self,keyword):
+        with self.db_connect.cursor() as cursor:
+            sql_query_part = f"SELECT * FROM Linenews WHERE column_name = '{keyword}'"
             cursor.execute(sql_query_part)
             self.db_connect.commit()
         self.db_connect.close()

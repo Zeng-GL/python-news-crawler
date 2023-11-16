@@ -39,7 +39,9 @@ def get_data_from_database(user_message):
     # Implement logic to query the database and retrieve data
     # Use the 'conn' object created earlier to execute SQL queries
     # Return the data as a string
-    return "Data from the database"
+    if user_message == '新聞' or 'news':
+        result = db.db_obj.query_all(db.db_obj)
+        return result
 
 if __name__ == "__main__":
     app.run()
