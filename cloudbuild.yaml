@@ -62,4 +62,4 @@ images:
   - us-central1-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REGISTRY_REPO}/myimage:${SHORT_SHA}
 # [END cloudbuild_python_yaml]
 options:
-  logging: CLOUD_LOGGING_ONLY
+ logging: GCS_ONLY
