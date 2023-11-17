@@ -12,20 +12,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-runtime: python
-env: flex
-entrypoint: gunicorn -b :$PORT main:app
+# runtime: python
+# env: flex
+# entrypoint: gunicorn -b :$PORT main:app
 
-runtime_config:
-  operating_system: ubuntu22
+# runtime_config:
+#   operating_system: ubuntu22
 
-# This sample incurs costs to run on the App Engine flexible environment.
-# The settings below are to reduce costs during testing and are not appropriate
-# for production use. For more information, see:
-# https://cloud.google.com/appengine/docs/flexible/python/configuring-your-app-with-app-yaml
-manual_scaling:
-  instances: 1
-resources:
-  cpu: 1
-  memory_gb: 0.5
-  disk_size_gb: 10
+# # This sample incurs costs to run on the App Engine flexible environment.
+# # The settings below are to reduce costs during testing and are not appropriate
+# # for production use. For more information, see:
+# # https://cloud.google.com/appengine/docs/flexible/python/configuring-your-app-with-app-yaml
+# manual_scaling:
+#   instances: 1
+# resources:
+#   cpu: 1
+#   memory_gb: 0.5
+#   disk_size_gb: 10
+
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/line-news-bot/github.com/zeng-gl/python-news-crawler:$COMMIT_SHA', '.']
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+substitutions:
+  _LOGS_BUCKET_NAME: python-news-crawler
+  _DEFAULT_LOGS_BUCKET_BEHAVIOR: REGIONAL_USER_OWNED_BUCKET
+
