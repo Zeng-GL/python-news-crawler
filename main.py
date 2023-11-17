@@ -44,4 +44,4 @@ def get_data_from_database(user_message):
         return result
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host="localhost", port=8080, debug=True)
