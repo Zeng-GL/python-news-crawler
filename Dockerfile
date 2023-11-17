@@ -2,6 +2,12 @@
 # https://hub.docker.com/_/python
 FROM python:3.9-slim
 
+# 定义构建参数
+ARG LOGS_BUCKET_NAME
+
+# 在构建过程中使用构建参数
+RUN gcloud builds submit --config=cloudbuild.yaml --project=python-news-crawler --substitutions=_LOGS_BUCKET_NAME=${LOGS_BUCKET_NAME}
+
 # Allow statements and log messages to immediately appear in the Knative logs
 ENV PYTHONUNBUFFERED True
 
