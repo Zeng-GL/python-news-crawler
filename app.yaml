@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,32 +11,53 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-# runtime: python
-# env: flex
-# entrypoint: gunicorn -b :$PORT main:app
-
-# runtime_config:
-#   operating_system: ubuntu22
-
-# # This sample incurs costs to run on the App Engine flexible environment.
-# # The settings below are to reduce costs during testing and are not appropriate
-# # for production use. For more information, see:
-# # https://cloud.google.com/appengine/docs/flexible/python/configuring-your-app-with-app-yaml
-# manual_scaling:
-#   instances: 1
-# resources:
-#   cpu: 1
-#   memory_gb: 0.5
-#   disk_size_gb: 10
-
+# [START cloudbuild_python_yaml]
+# [START cloudbuild_python_dependencies_yaml]
 steps:
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/line-news-bot/github.com/zeng-gl/python-news-crawler:$COMMIT_SHA', '.']
-options:
-  logging: CLOUD_LOGGING_ONLY
+  # Install dependencies
+  - name: python
+    entrypoint: pip
+    args: ["install", "-r", "requirements.txt", "--user"]
+# [END cloudbuild_python_dependencies_yaml]
 
-substitutions:
-  _LOGS_BUCKET_NAME: python-news-crawler
-  _DEFAULT_LOGS_BUCKET_BEHAVIOR: REGIONAL_USER_OWNED_BUCKET
+  # [START cloudbuild_python_tests_yaml]
+  # Run unit tests
+  - name: python
+    entrypoint: python
+    args: ["-m", "pytest", "--junitxml=${SHORT_SHA}_test_log.xml"] 
+  # [END cloudbuild_python_tests_yaml]
 
+  # [START cloudbuild_python_image_yaml]
+  # Docker Build
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 
+           'us-central1-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REGISTRY_REPO}/myimage:${SHORT_SHA}', '.']
+  # [END cloudbuild_python_image_yaml]
+
+  # [START cloudbuild_python_push_yaml]
+  # Docker push to Google Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push',  'us-central1-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REGISTRY_REPO}/myimage:${SHORT_SHA}']
+  # [END cloudbuild_python_push_yaml]
+  
+  # [START cloudbuild_python_deploy_yaml]
+  # Deploy to Cloud Run
+  - name: google/cloud-sdk
+    args: ['gcloud', 'run', 'deploy', 'helloworld-${SHORT_SHA}', 
+           '--image=us-central1-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REGISTRY_REPO}/myimage:${SHORT_SHA}', 
+           '--region', 'us-central1', '--platform', 'managed', 
+           '--allow-unauthenticated']
+  # [END cloudbuild_python_deploy_yaml]
+  
+# [START cloudbuild_python_logs_yaml]
+# Save test logs to Google Cloud Storage
+artifacts:
+  objects:
+    location: gs://${_BUCKET_NAME}/
+    paths:
+      - ${SHORT_SHA}_test_log.xml
+# [END cloudbuild_python_logs_yaml]
+# Store images in Google Artifact Registry 
+images:
+  - us-central1-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REGISTRY_REPO}/myimage:${SHORT_SHA}
+# [END cloudbuild_python_yaml]
