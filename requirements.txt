@@ -32,6 +32,7 @@ numexpr @ file:///C:/b/abs_5fucrty5dc/croot/numexpr_1696515448831/work
 numpy @ file:///C:/b/abs_9fu2cs2527/croot/numpy_and_numpy_base_1695830496596/work/dist/numpy-1.26.0-cp310-cp310-win_amd64.whl#sha256=11367989d61b64039738e0c68c95c6b797a41c4c75ec2147c0541b21163786eb
 packaging==23.2
 pandas @ file:///C:/b/abs_81b3npjrl8/croot/pandas_1697477219064/work/dist/pandas-2.1.1-cp310-cp310-win_amd64.whl#sha256=f5efc0086b0ee45b0ebca3e44e872d36cff14a3242807897e41b9165b5625901
+pip==23.3.1
 pycparser @ file:///tmp/build/80754af9/pycparser_1636541352034/work
 pydantic==2.5.1
 pydantic_core==2.14.3
