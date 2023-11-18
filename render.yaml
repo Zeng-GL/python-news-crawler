@@ -8,7 +8,6 @@ services:
   plan: free
   autoDeploy: false
   envVars:
-  - key: 288Y8P1Kb/o5kGu/yDhSsZbu3PiZnghl/PzK9EXuy81GIhX9t40xxaS/ZzsFQLN6/LOHGepbP2GtWYZAIMxklmD13Du4KBNtWcJ0JbO4CBAv9U8hw13bxae7mOkBTqwGQFeQB+EQ/awQgEwDtv/ebAdB04t89/1O/w1cDnyilFU=
-    sync: false
-  - key: 1c3781afb3508433d7d2824bbc4677ff
+  - key: Channel access token
+  - key: Channel Secret
     sync: false
