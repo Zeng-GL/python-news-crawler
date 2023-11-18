@@ -38,6 +38,7 @@ pydantic_core==2.14.3
 PyMySQL @ file:///C:/ci_310/pymysql_1643295949948/work
 pyOpenSSL @ file:///C:/b/abs_08f38zyck4/croot/pyopenssl_1690225407403/work
 PySocks @ file:///C:/ci_310/pysocks_1642089375450/work
+python==3.10.13
 python-dateutil @ file:///tmp/build/80754af9/python-dateutil_1626374649649/work
 pytz @ file:///C:/b/abs_19q3ljkez4/croot/pytz_1695131651401/work
 requests @ file:///C:/b/abs_316c2inijk/croot/requests_1690400295842/work
